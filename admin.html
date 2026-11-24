@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVOS — Admin panel</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+  <main class="login-screen" id="login-screen">
+    <form class="login-card" id="admin-login" autocomplete="off">
+      <div class="login-logo">EVOS</div>
+      <h1>Admin panel</h1>
+      <p>Tizimga kirish</p>
+
+      <div class="language-switcher" aria-label="Til">
+        <button type="button" data-language="uz" class="active">UZ</button>
+        <button type="button" data-language="ru">RU</button>
+        <button type="button" data-language="en">EN</button>
+      </div>
+
+      <label for="admin-login-name" data-i18n="login">Login</label>
+      <input id="admin-login-name" type="text" inputmode="numeric" autocomplete="off" required>
+      <label for="admin-password" data-i18n="password">Parol</label>
+      <input id="admin-password" type="password" inputmode="numeric" autocomplete="new-password" required>
+      <button class="login-button" type="submit" data-i18n="enter">Kirish</button>
+      <p class="login-error" id="login-error" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <main class="admin-app" id="admin-app" hidden>
+    <aside class="sidebar">
+      <div class="brand">EVOS</div>
+      <nav class="admin-nav">
+        <button type="button" class="active" data-admin-section="overview" data-i18n="overview">
+          Umumiy
+        </button>
+        <button type="button" data-admin-section="orders" data-i18n="orders">
+          Buyurtmalar
+        </button>
+        <button type="button" data-admin-section="history" data-i18n="history">
+          Tarix
+        </button>
+        <button type="button" data-admin-section="products" data-i18n="products">
+          Mahsulotlar
+        </button>
+      </nav>
+      <div class="sidebar-bottom">
+        <select id="admin-language" class="sidebar-language" aria-label="Til">
+          <option value="uz">O'zbekcha</option>
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+        </select>
+        <button type="button" id="admin-logout" data-i18n="logout">Chiqish</button>
+      </div>
+    </aside>
+
+    <section class="admin-content">
+      <header class="admin-header">
+        <div>
+          <p data-i18n="adminPanel">Admin paneli</p>
+          <h1 data-i18n="orderManagement">Buyurtmalarni boshqarish</h1>
+        </div>
+        <a class="back-store" href="index.html" data-i18n="backStore">Do‘konga qaytish</a>
+      </header>
+
+      <section class="admin-section" id="overview-section">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span data-i18n="totalOrders">Jami buyurtmalar</span>
+            <strong id="total-orders">0</strong>
+          </article>
+          <article class="stat-card">
+            <span data-i18n="totalSales">Jami summa</span>
+            <strong id="total-sales">0 so'm</strong>
+          </article>
+          <article class="stat-card">
+            <span data-i18n="todayOrders">Bugungi buyurtmalar</span>
+            <strong id="today-orders">0</strong>
+          </article>
+          <article class="stat-card">
+            <span data-i18n="completed">Bajarilgan</span>
+            <strong id="completed-orders">0%</strong>
+          </article>
+        </div>
+
+        <div class="charts-grid">
+          <article class="chart-card">
+            <div class="chart-heading">
+              <div>
+                <h2 data-i18n="orderStatistics">Buyurtmalar statistikasi</h2>
+                <p data-i18n="last7Days">So‘nggi 7 kun</p>
+              </div>
+              <strong id="week-total">0 ta</strong>
+            </div>
+            <div class="line-chart" id="line-chart"></div>
+          </article>
+
+          <article class="chart-card">
+            <div class="chart-heading">
+              <div>
+                <h2 data-i18n="orderStatus">Buyurtma holati</h2>
+                <p data-i18n="statusByTotal">Jami holatlar bo‘yicha</p>
+              </div>
+            </div>
+            <div class="donut-layout">
+              <div class="donut" id="status-donut">
+                <div class="donut-center">
+                  <strong id="donut-total">0</strong>
+                  <span data-i18n="orders">Buyurtmalar</span>
+                </div>
+              </div>
+              <div class="donut-legend" id="donut-legend"></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="table-card">
+          <h2 data-i18n="recentOrders">So‘nggi buyurtmalar</h2>
+          <div class="orders-list" id="recent-orders"></div>
+        </article>
+      </section>
+
+      <section class="admin-section" id="orders-section" hidden>
+        <article class="table-card">
+          <div class="table-heading">
+            <h2 data-i18n="allOrders">Barcha buyurtmalar</h2>
+            <span id="orders-count">0 ta</span>
+          </div>
+          <div class="orders-list" id="all-orders"></div>
+        </article>
+      </section>
+
+      <section class="admin-section" id="history-section" hidden>
+        <article class="table-card">
+          <div class="table-heading">
+            <h2 data-i18n="history">Tarix</h2>
+            <span id="history-count">0 ta</span>
+          </div>
+          <div class="history-list" id="history-list"></div>
+        </article>
+      </section>
+
+      <section class="admin-section" id="products-section" hidden>
+        <article class="table-card">
+          <div class="table-heading">
+            <h2 data-i18n="products">Mahsulotlar</h2>
+            <button type="button" class="product-add-main" id="product-add-main">+ Mahsulot qo‘shish</button>
+          </div>
+
+          <form class="product-form" id="product-form" hidden>
+            <input id="product-name" type="text" placeholder="Mahsulot nomi" required>
+            <input id="product-price" type="number" min="0" placeholder="Narxi" required>
+            <input id="product-stock" type="number" min="0" value="30" placeholder="Miqdor" required>
+            <input id="product-image" type="url" placeholder="Rasm havolasi (ixtiyoriy)">
+            <button type="submit">Saqlash</button>
+            <button type="button" id="product-form-cancel">Bekor qilish</button>
+          </form>
+
+          <div class="product-list" id="product-list"></div>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <div class="receipt-modal" id="receipt-modal" hidden>
+    <section class="receipt-dialog" role="dialog" aria-modal="true" aria-labelledby="receipt-title">
+      <button type="button" class="receipt-close" id="receipt-close" aria-label="Yopish">&times;</button>
+      <div class="receipt-brand">EVOS</div>
+      <h2 id="receipt-title">Buyurtma cheki</h2>
+      <p class="receipt-number" id="receipt-number"></p>
+      <p class="receipt-date" id="receipt-date"></p>
+      <p class="receipt-customer" id="receipt-customer"></p>
+      <div class="receipt-items" id="receipt-items"></div>
+      <div class="receipt-total-row"><span>Mahsulotlar</span><strong id="receipt-subtotal"></strong></div>
+      <div class="receipt-total-row" id="receipt-discount-row"><span>Chegirma</span><strong
+          id="receipt-discount"></strong></div>
+      <div class="receipt-total-row receipt-grand"><span>Jami</span><strong id="receipt-total"></strong></div>
+      <p class="receipt-status" id="receipt-status"></p>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabaseClient.js"></script>
+  <script src="admin.js"></script>
+</body>
+
+</html>
